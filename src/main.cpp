@@ -68,7 +68,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR CmdLine, 
 	ShowWindow(hWnd, SW_SHOW);
 	D3DIniti(hWnd);
 
-	bool isShow = true;
+	bool isShow = true, ignoreKeys = true;
 	int xx = 0, yy = 0;
 	while (1)
 	{
@@ -77,45 +77,38 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR CmdLine, 
 			exit(1);
 		}
 
+		if (GetAsyncKeyState(VK_HOME) & 1)
+		{
+			ignoreKeys = !ignoreKeys;
+		}
+
+		if (!ignoreKeys)
+		{
+			if (GetAsyncKeyState(VK_UP) & 1)
+			{
+				--yy;
+			}
+
+			if (GetAsyncKeyState(VK_DOWN) & 1)
+			{
+				++yy;
+			}
+
+			if (GetAsyncKeyState(VK_LEFT) & 1)
+			{
+				--xx;
+			}
+
+			if (GetAsyncKeyState(VK_RIGHT) & 1)
+			{
+				++xx;
+			}
+		}
+
 		if (GetAsyncKeyState(VK_INSERT))
 		{
 			isShow = !isShow;
 			Sleep(100);
-		}
-
-		if (GetAsyncKeyState(VK_HOME) & 1)
-		{
-			ShowWindow(hWnd, SW_SHOW);
-		}
-
-		if (GetAsyncKeyState(VK_DELETE) & 1)
-		{
-			ShowWindow(hWnd, SW_HIDE);
-		}
-
-		if (GetAsyncKeyState(VK_BACK) & 1)
-		{
-			ShowWindow(hWnd, SW_SHOWNOACTIVATE);
-		}
-
-		if (GetAsyncKeyState(VK_UP) & 1)
-		{
-			--yy;
-		}
-
-		if (GetAsyncKeyState(VK_DOWN) & 1)
-		{
-			++yy;
-		}
-
-		if (GetAsyncKeyState(VK_LEFT) & 1)
-		{
-			--xx;
-		}
-
-		if (GetAsyncKeyState(VK_RIGHT) & 1)
-		{
-			++xx;
 		}
 
 		if (PeekMessage(&Message, hWnd, 0, 0, PM_REMOVE))
