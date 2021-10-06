@@ -4,6 +4,7 @@
 #include <dwmapi.h>
 #include <DXD9.hpp>
 #include <hud.hpp>
+#include "../res/resource.h"
 
 #pragma comment(lib, "d3dx9.lib")
 #pragma comment(lib, "d3d9.lib")
@@ -15,6 +16,13 @@ LRESULT CALLBACK Proc(HWND hWnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	switch (Message)
 	{
+	case WM_CREATE:
+	{
+		HINSTANCE hInstance = ((LPCREATESTRUCT)lParam)->hInstance;
+		HICON hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+		SendMessage(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+		return 0;
+	}
 	case WM_PAINT:
 		return DwmExtendFrameIntoClientArea(hWnd, &Margin);
 	case WM_DESTROY:
@@ -53,7 +61,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR CmdLine, 
 	int width, height;
 	GetMonitorSizes(width, height);
 
-	hWnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_LAYERED | WS_EX_COMPOSITED | WS_EX_TRANSPARENT, "HudLayouter", "HudLayouter", WS_EX_TOPMOST | WS_POPUP, 100, 100, width, height, NULL, NULL, NULL, NULL);
+	hWnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_LAYERED | WS_EX_COMPOSITED | WS_EX_TRANSPARENT, "HudLayouter", "HudLayouter", WS_EX_TOPMOST | WS_POPUP, 100, 100, width, height, HWND_DESKTOP, NULL, hInstance, NULL);
 
 	SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 	SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
@@ -64,7 +72,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR CmdLine, 
 	int xx = 0, yy = 0;
 	while (1)
 	{
-		if (!IsWindow(hWnd))
+		if (!IsWindow(hWnd) || GetAsyncKeyState(VK_END))
 		{
 			exit(1);
 		}
@@ -73,6 +81,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR CmdLine, 
 		{
 			isShow = !isShow;
 			Sleep(100);
+		}
+
+		if (GetAsyncKeyState(VK_HOME) & 1)
+		{
+			ShowWindow(hWnd, SW_SHOW);
+		}
+
+		if (GetAsyncKeyState(VK_DELETE) & 1)
+		{
+			ShowWindow(hWnd, SW_HIDE);
+		}
+
+		if (GetAsyncKeyState(VK_BACK) & 1)
+		{
+			ShowWindow(hWnd, SW_SHOWNOACTIVATE);
 		}
 
 		if (GetAsyncKeyState(VK_UP) & 1)

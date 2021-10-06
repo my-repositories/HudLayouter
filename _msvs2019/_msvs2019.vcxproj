@@ -161,6 +161,13 @@
   <ItemGroup>
     <ClInclude Include="..\inc\DXD9.hpp" />
     <ClInclude Include="..\inc\hud.hpp" />
+    <ClInclude Include="..\res\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\res\resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\res\electronic_repair_service_desktop_computer_icon_193580.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
